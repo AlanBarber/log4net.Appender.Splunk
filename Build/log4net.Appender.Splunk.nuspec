@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>log4net.Appender.Splunk</id>
+        <version>1.0.0</version>
+        <title>log4net.Appender.Splunk</title>
+        <authors>Alan Barber</authors>
+        <owners>alanbarber</owners>
+        <licenseUrl>https://github.com/AlanBarber/log4net.Appender.Splunk/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/AlanBarber/log4net.Appender.Splunk</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/AlanBarber/log4net.Appender.Splunk/master/Docs/nugeticon.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A log4net appender for Splunk Http Event Collector (HEC) Sender</description>
+        <summary>A log4net appender for Splunk Http Event Collector (HEC) Sender</summary>
+        <releaseNotes>Version 1.0.0
+ - First publish to NuGet</releaseNotes>
+        <copyright>Copyright (c) 2017 Alan Barber</copyright>
+        <language>en-US</language>
+        <tags>log4net log4net-appender splunk splunk-enterprise logging</tags>
+        <dependencies>
+            <dependency id="log4net" version="2.0.8" />
+            <dependency id="Splunk.Logging.Common" version="1.6.1" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="log4net.config.transform" target="content\log4net.config.transform" />
+        <file src="..\Src\log4net.Appender.Splunk\bin\Release\log4net.Appender.Splunk.dll" target="lib\net46\log4net.Appender.Splunk.dll" />
+        <file src="install.ps1" target="tools\install.ps1" />
+    </files>
+</package>
