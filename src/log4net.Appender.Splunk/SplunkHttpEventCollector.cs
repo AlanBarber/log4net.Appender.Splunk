@@ -1,7 +1,7 @@
 ﻿using log4net.Core;
 using Splunk.Logging;
 using System;
-using System.Dynamic;
+using System.Collections.Generic;
 using System.Net;
 
 namespace log4net.Appender.Splunk
@@ -25,14 +25,14 @@ namespace log4net.Appender.Splunk
         public override void ActivateOptions()
         {
             _hecSender = new HttpEventCollectorSender(
-                new Uri(ServerUrl),                                                                     // Splunk HEC URL
-                Token,                                                                                  // Splunk HEC token *GUID*
-                new HttpEventCollectorEventInfo.Metadata(null, null, "_json", Environment.MachineName), // Metadata
-                HttpEventCollectorSender.SendMode.Sequential,                                           // Sequential sending to keep message in order
-                0,                                                                                      // BatchInterval - Set to 0 to disable
-                0,                                                                                      // BatchSizeBytes - Set to 0 to disable
-                0,                                                                                      // BatchSizeCount - Set to 0 to disable
-                new HttpEventCollectorResendMiddleware(RetriesOnError).Plugin                           // Resend Middleware with retry
+                new Uri(ServerUrl),                                                                 // Splunk HEC URL
+                Token,                                                                              // Splunk HEC token *GUID*
+                new HttpEventCollectorEventInfo.Metadata(null, null, "_json", GetMachineName()),    // Metadata
+                HttpEventCollectorSender.SendMode.Sequential,                                       // Sequential sending to keep message in order
+                0,                                                                                  // BatchInterval - Set to 0 to disable
+                0,                                                                                  // BatchSizeBytes - Set to 0 to disable
+                0,                                                                                  // BatchSizeCount - Set to 0 to disable
+                new HttpEventCollectorResendMiddleware(RetriesOnError).Plugin                       // Resend Middleware with retry
             );
 
             // throw error on send failure
@@ -44,11 +44,7 @@ namespace log4net.Appender.Splunk
             // If enabled will create callback to bypass ssl error checks for our server url
             if (IgnoreSslErrors)
             {
-                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) =>
-                {
-                    var httpWebRequest = sender as HttpWebRequest;
-                    return httpWebRequest?.RequestUri.Authority == new Uri(ServerUrl).Authority;
-                };
+                // TODO: Enable sql error bypass
             }
         }
 
@@ -80,24 +76,36 @@ namespace log4net.Appender.Splunk
             }
 
             // Build metaData
-            var metaData = new HttpEventCollectorEventInfo.Metadata(null, loggingEvent.LoggerName, "_json", Environment.MachineName);
+            var metaData = new HttpEventCollectorEventInfo.Metadata(null, loggingEvent.LoggerName, "_json", GetMachineName());
 
-            // Build optional data object
-            dynamic objData = null;
+            // Build properties object
+            var properties = new Dictionary<String, object>();
 
-            if (loggingEvent.ExceptionObject != null)
+            // Add standard values to properties
+            properties.Add("Source", loggingEvent.LoggerName);
+            properties.Add("Host", GetMachineName());
+
+            // Get properties from event
+            if (loggingEvent.Properties != null && loggingEvent.Properties.Count > 0)
             {
-                objData = new ExpandoObject();
-
-                if (loggingEvent.ExceptionObject != null)
+                foreach (var key in loggingEvent.Properties.GetKeys())
                 {
-                    objData.Exception = loggingEvent.ExceptionObject;
+                    properties.Add(key, loggingEvent.Properties[key]);
                 }
             }
 
             // Send the event to splunk
-            _hecSender.Send(Guid.NewGuid().ToString(), loggingEvent.Level.Name, loggingEvent.RenderedMessage, objData, metaData);
+            _hecSender.Send(null, loggingEvent.Level.Name, null, loggingEvent.RenderedMessage, loggingEvent.ExceptionObject, properties, metaData);
             _hecSender.FlushSync();
+        }
+
+        /// <summary>
+        /// Gets the machine name
+        /// </summary>
+        /// <returns></returns>
+        private string GetMachineName()
+        {
+            return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("COMPUTERNAME")) ? System.Environment.GetEnvironmentVariable("COMPUTERNAME") : System.Net.Dns.GetHostName();
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestApp", "ConsoleTestApp\ConsoleTestApp.csproj", "{8CF7482B-0B95-4C29-8B19-25D210CDB0CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Appender.Splunk", "log4net.Appender.Splunk\log4net.Appender.Splunk.csproj", "{C2B4ADF8-09C2-41C8-BC8E-1B669EBF5324}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Appender.Splunk", "log4net.Appender.Splunk\log4net.Appender.Splunk.csproj", "{7998193B-6D44-45C7-A385-9938A9D84237}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestApp", "ConsoleTestApp\ConsoleTestApp.csproj", "{8CF7482B-0B95-4C29-8B19-25D210CDB0CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Appender.Splunk.Tests", "log4net.Appender.Splunk.Tests\log4net.Appender.Splunk.Tests.csproj", "{429AEC05-12EE-4B49-8BB4-F3DE9E4F4C11}"
 EndProject
@@ -15,14 +15,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2B4ADF8-09C2-41C8-BC8E-1B669EBF5324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B4ADF8-09C2-41C8-BC8E-1B669EBF5324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B4ADF8-09C2-41C8-BC8E-1B669EBF5324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B4ADF8-09C2-41C8-BC8E-1B669EBF5324}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CF7482B-0B95-4C29-8B19-25D210CDB0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CF7482B-0B95-4C29-8B19-25D210CDB0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CF7482B-0B95-4C29-8B19-25D210CDB0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CF7482B-0B95-4C29-8B19-25D210CDB0CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7998193B-6D44-45C7-A385-9938A9D84237}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{7998193B-6D44-45C7-A385-9938A9D84237}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{7998193B-6D44-45C7-A385-9938A9D84237}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7998193B-6D44-45C7-A385-9938A9D84237}.Release|Any CPU.Build.0 = Release|Any CPU
 		{429AEC05-12EE-4B49-8BB4-F3DE9E4F4C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{429AEC05-12EE-4B49-8BB4-F3DE9E4F4C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{429AEC05-12EE-4B49-8BB4-F3DE9E4F4C11}.Release|Any CPU.ActiveCfg = Release|Any CPU

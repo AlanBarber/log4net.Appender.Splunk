@@ -1,18 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Dynamic;
-using log4net.Core;
+﻿using log4net.Core;
 using log4net.Repository.Hierarchy;
+using System;
+using Xunit;
 
 namespace log4net.Appender.Splunk.Tests
 {
-    [TestClass]
     public class SplunkHttpEventCollectorTests
     {
         private log4net.ILog _logger = null;
-
-        [TestInitialize]
-        public void Initialize()
+        public SplunkHttpEventCollectorTests()
         {
             // Step 1. Create repository object
             Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
@@ -45,62 +41,61 @@ namespace log4net.Appender.Splunk.Tests
             _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
 
-        [TestMethod]
+        [Fact]
         public void SendFatalWithException()
         {
             _logger.Fatal("This is a Fatal log message with an Exception", new Exception());
-
         }
 
-        [TestMethod]
+        [Fact]
         public void SendFatalWithoutException()
         {
             _logger.Fatal("This is a Fatal log message without an Exception");
         }
 
-        [TestMethod]
+        [Fact]
         public void SendErrorWithException()
         {
             _logger.Error("This is a Error log message with an Exception", new Exception());
         }
 
-        [TestMethod]
+        [Fact]
         public void SendErrorWithoutException()
         {
             _logger.Error("This is a Error log message without an Exception");
         }
 
-        [TestMethod]
+        [Fact]
         public void SendWarnWithException()
         {
             _logger.Warn("This is a Warn log message with an Exception", new Exception());
         }
 
-        [TestMethod]
+        [Fact]
         public void SendWarnWithoutException()
         {
             _logger.Warn("This is a Warn log message without an Exception");
         }
 
-        [TestMethod]
+        [Fact]
         public void SendInfoWithException()
         {
             _logger.Info("This is a Info log message with an Exception", new Exception());
         }
 
-        [TestMethod]
+        [Fact]
         public void SendInfoWithoutException()
         {
             _logger.Info("This is a Info log message without an Exception");
         }
 
-        [TestMethod]
+        [Fact]
         public void SendDebugWithException()
         {
             _logger.Debug("This is a Debug log message with an Exception", new Exception());
         }
 
-        [TestMethod]
+        [Fact]
         public void SendDebugWithoutException()
         {
             _logger.Debug("This is a Debug log message without an Exception");
