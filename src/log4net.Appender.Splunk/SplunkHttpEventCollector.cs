@@ -2,7 +2,6 @@
 using Splunk.Logging;
 using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace log4net.Appender.Splunk
 {
