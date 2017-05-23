@@ -11,7 +11,6 @@ namespace log4net.Appender.Splunk
         public string ServerUrl { get; set; }
         public string Token { get; set; }
         public int RetriesOnError { get; set; } = 0;
-        public bool IgnoreSslErrors { get; set; } = false;
 
         /// <summary>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -39,12 +38,6 @@ namespace log4net.Appender.Splunk
             {
                 throw new Exception($"SplunkHttpEventCollector failed to send log event to Splunk server '{new Uri(ServerUrl).Authority}' using token '{Token}'. Exception: {exception}");
             };
-
-            // If enabled will create callback to bypass ssl error checks for our server url
-            if (IgnoreSslErrors)
-            {
-                // TODO: Enable sql error bypass
-            }
         }
 
         /// <summary>
