@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>log4net.Appender.Splunk</id>
     <version>2.0.0</version>
@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/AlanBarber/log4net.Appender.Splunk/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/AlanBarber/log4net.Appender.Splunk</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/AlanBarber/log4net.Appender.Splunk/master/Docs/nugeticon.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/AlanBarber/log4net.Appender.Splunk/master/docs/nugeticon.png</iconUrl>
     <description>A log4net appender for Splunk Http Event Collector (HEC) Sender
 
 Setup Note: WIll fail to log if using https without a valid SSL cert.</description>
@@ -22,15 +22,15 @@ Version 1.0.0
     <language>en-US</language>
     <tags>log4net log4net-appender splunk splunk-enterprise logging</tags>
     <dependencies>
-	  <group targetFramework=".NETStandard2.0">
-	    <dependency id="log4net" version="2.0.8" />
-	    <dependency id="Newtonsoft.Json" version="11.0.1" />
-	  </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="log4net" version="2.0.8" />
+        <dependency id="Newtonsoft.Json" version="11.0.1" />
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="log4net.config.transform" target="content\log4net.config.transform" />
-    <file src="..\src\log4net.Appender.Splunk\bin\Release\netstandard2.0\log4net.Appender.Splunk.dll" target="lib\netstandard2.0\log4net.Appender.Splunk.dll" />
-    <file src="install.ps1" target="tools\install.ps1" />
+    <file src="content\log4net.config.transform" target="content\log4net.config.transform" />
+    <file src="lib\netstandard2.0\log4net.Appender.Splunk.dll" target="lib\netstandard2.0\log4net.Appender.Splunk.dll" />
+    <file src="tools\install.ps1" target="tools\install.ps1" />
   </files>
 </package>
