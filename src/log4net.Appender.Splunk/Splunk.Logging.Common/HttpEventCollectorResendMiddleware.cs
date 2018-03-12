@@ -42,11 +42,11 @@ namespace Splunk.Logging
         // List of HTTP event collector server application error statuses. These statuses 
         // indicate non-transient problems that cannot be fixed by resending the 
         // data.
-        private static readonly HttpStatusCode[] HttpEventCollectorApplicationErrors = 
+        private static readonly HttpStatusCode[] HttpEventCollectorApplicationErrors =
         {
             HttpStatusCode.Forbidden,
             HttpStatusCode.MethodNotAllowed,
-            HttpStatusCode.BadRequest                  
+            HttpStatusCode.BadRequest
         };
 
         private const int RetryDelayCeiling = 60 * 1000; // 1 minute     
@@ -67,10 +67,10 @@ namespace Splunk.Logging
         /// <param name="next"></param>
         /// <returns></returns>
         public async Task<HttpResponseMessage> Plugin(
-            string token, 
-            List<HttpEventCollectorEventInfo> events, 
+            string token,
+            List<HttpEventCollectorEventInfo> events,
             HttpEventCollectorSender.HttpEventCollectorHandler next)
-        {          
+        {
             HttpResponseMessage response = null;
             HttpStatusCode statusCode = HttpStatusCode.OK;
             Exception webException = null;

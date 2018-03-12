@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace log4net.Appender.Splunk
 {
+    /// <summary>
+    /// log4net Appender
+    /// </summary>
     public class SplunkHttpEventCollector : AppenderSkeleton
     {
         private HttpEventCollectorSender _hecSender;
@@ -18,7 +21,7 @@ namespace log4net.Appender.Splunk
         protected override bool RequiresLayout => true;
 
         /// <summary>
-        /// 
+        /// Initialize the options on the SplunkHttpEventCollector appender
         /// </summary>
         public override void ActivateOptions()
         {
@@ -32,28 +35,13 @@ namespace log4net.Appender.Splunk
                 0,                                                                                  // BatchSizeCount - Set to 0 to disable
                 new HttpEventCollectorResendMiddleware(RetriesOnError).Plugin                       // Resend Middleware with retry
             );
-
-            // throw error on send failure
-            _hecSender.OnError += exception =>
-            {
-                throw new Exception($"SplunkHttpEventCollector failed to send log event to Splunk server '{new Uri(ServerUrl).Authority}' using token '{Token}'. Exception: {exception}");
-            };
         }
 
         /// <summary>
-        /// 
+        /// Method used by log4net to perform actual logging
         /// </summary>
         /// <param name="loggingEvent"></param>
         protected override void Append(LoggingEvent loggingEvent)
-        {
-            SendEventToServer(loggingEvent);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="loggingEvent"></param>
-        private void SendEventToServer(LoggingEvent loggingEvent)
         {
             // Sanity check for LogEventInfo
             if (loggingEvent == null)
@@ -64,18 +52,18 @@ namespace log4net.Appender.Splunk
             // Make sure we have a properly setup HttpEventCollectorSender
             if (_hecSender == null)
             {
-                throw new Exception("SplunkHttpEventCollector SendEventToServer() called before InitializeTarget()");
+                throw new Exception("SplunkHttpEventCollector Append() called before ActivateOptions()");
             }
 
             // Build metaData
             var metaData = new HttpEventCollectorEventInfo.Metadata(null, loggingEvent.LoggerName, "_json", GetMachineName());
 
-            // Build properties object
-            var properties = new Dictionary<String, object>();
-
-            // Add standard values to properties
-            properties.Add("Source", loggingEvent.LoggerName);
-            properties.Add("Host", GetMachineName());
+            // Build properties object and assign standard values
+            var properties = new Dictionary<String, object>
+            {
+                {"Source", loggingEvent.LoggerName},
+                { "Host", GetMachineName()}
+            };
 
             // Get properties from event
             if (loggingEvent.Properties != null && loggingEvent.Properties.Count > 0)

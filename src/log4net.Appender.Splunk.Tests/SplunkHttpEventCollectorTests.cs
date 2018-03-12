@@ -7,7 +7,8 @@ namespace log4net.Appender.Splunk.Tests
 {
     public class SplunkHttpEventCollectorTests
     {
-        private log4net.ILog _logger = null;
+        private readonly log4net.ILog _logger;
+
         public SplunkHttpEventCollectorTests()
         {
             // Step 1. Create repository object
@@ -17,8 +18,8 @@ namespace log4net.Appender.Splunk.Tests
             var splunkHttpEventCollector = new SplunkHttpEventCollector();
 
             // Step 3. Set appender properties
-            splunkHttpEventCollector.ServerUrl = "https://localhost:8088";
-            splunkHttpEventCollector.Token = "ED9F5A37-BE9A-4782-B5F7-B6E31AC369CA";
+            splunkHttpEventCollector.ServerUrl = "http://localhost:8088";
+            splunkHttpEventCollector.Token = "b9e45a2a-1093-4572-9a9d-2ef2baabafb5";
             splunkHttpEventCollector.RetriesOnError = 0;
 
             log4net.Layout.PatternLayout patternLayout = new log4net.Layout.PatternLayout
