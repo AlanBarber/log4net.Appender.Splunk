@@ -3,7 +3,7 @@ log4net.Appender.Splunk
 
 log4net.Appender.Splunk is a [Splunk HTTP Event Collector](http://dev.splunk.com/view/event-collector/SP-CAAAE7F) target for [log4net](https://logging.apache.org/log4net/)
 
-[![NuGet version](https://badge.fury.io/nu/NLog.Targets.Splunk.svg)](https://badge.fury.io/nu/log4net.Appender.Splunk)
+[![NuGet version](https://badge.fury.io/nu/log4net.Appender.Splunk.svg)](https://badge.fury.io/nu/log4net.Appender.Splunk)
 
 ## Getting started
 
