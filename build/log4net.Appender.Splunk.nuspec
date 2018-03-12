@@ -12,13 +12,16 @@
     <iconUrl>https://raw.githubusercontent.com/AlanBarber/log4net.Appender.Splunk/master/docs/nugeticon.png</iconUrl>
     <description>A log4net appender for Splunk Http Event Collector (HEC) Sender
 
-Setup Note: WIll fail to log if using https without a valid SSL cert.</description>
+Note(s): 
+ - Setup Note: Will fail to log if using https without a valid SSL cert.
+ - This package uses the log4net.Appender namespace but is NOT an official log4net project package.
+ - Includes modifed code from Splunk.Logging.Common to work with .Net Standard / .Net Core.</description>
     <summary>A log4net appender for Splunk Http Event Collector (HEC) Sender</summary>
     <releaseNotes>Version 2.0.0
 - Updated to .NET Standard 2.0
 Version 1.0.0
  - First publish to NuGet</releaseNotes>
-    <copyright>Copyright (c) 2018 Alan Barber</copyright>
+    <copyright>Copyright (c) 2018 Alan Barber, Copyright 2013-2015 Splunk, Inc.</copyright>
     <language>en-US</language>
     <tags>log4net log4net-appender splunk splunk-enterprise logging</tags>
     <dependencies>
