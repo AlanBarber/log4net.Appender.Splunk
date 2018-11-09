@@ -13,6 +13,8 @@ namespace log4net.Appender.Splunk
         private HttpEventCollectorSender _hecSender;
         public string ServerUrl { get; set; }
         public string Token { get; set; }
+        public string Index { get; set; }
+        public string Host { get; set; }
         public int RetriesOnError { get; set; } = 0;
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace log4net.Appender.Splunk
             _hecSender = new HttpEventCollectorSender(
                 new Uri(ServerUrl),                                                                 // Splunk HEC URL
                 Token,                                                                              // Splunk HEC token *GUID*
-                new HttpEventCollectorEventInfo.Metadata(null, null, "_json", GetMachineName()),    // Metadata
+                new HttpEventCollectorEventInfo.Metadata(Index, null, "_json", GetMachineName()),   // Metadata
                 HttpEventCollectorSender.SendMode.Sequential,                                       // Sequential sending to keep message in order
                 0,                                                                                  // BatchInterval - Set to 0 to disable
                 0,                                                                                  // BatchSizeBytes - Set to 0 to disable
@@ -56,7 +58,7 @@ namespace log4net.Appender.Splunk
             }
 
             // Build metaData
-            var metaData = new HttpEventCollectorEventInfo.Metadata(null, loggingEvent.LoggerName, "_json", GetMachineName());
+            var metaData = new HttpEventCollectorEventInfo.Metadata(Index, loggingEvent.LoggerName, "_json", GetMachineName());
 
             // Build properties object and assign standard values
             var properties = new Dictionary<String, object>
@@ -85,6 +87,11 @@ namespace log4net.Appender.Splunk
         /// <returns></returns>
         private string GetMachineName()
         {
+            if (!string.IsNullOrEmpty(Host))
+            {
+                return Host;
+            }
+            
             return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("COMPUTERNAME")) ? System.Environment.GetEnvironmentVariable("COMPUTERNAME") : System.Net.Dns.GetHostName();
         }
     }
