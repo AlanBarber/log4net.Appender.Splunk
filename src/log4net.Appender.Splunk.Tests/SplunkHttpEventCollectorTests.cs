@@ -19,7 +19,7 @@ namespace log4net.Appender.Splunk.Tests
 
             // Step 3. Set appender properties
             splunkHttpEventCollector.ServerUrl = "http://localhost:8088";
-            splunkHttpEventCollector.Token = "b9e45a2a-1093-4572-9a9d-2ef2baabafb5";
+            splunkHttpEventCollector.Token = "7856e3dd-b7d2-4b8f-b88e-61146264b727";
             splunkHttpEventCollector.RetriesOnError = 0;
 
             log4net.Layout.PatternLayout patternLayout = new log4net.Layout.PatternLayout
