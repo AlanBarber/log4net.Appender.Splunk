@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Appender.Splunk.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetWebApp", "AspNetWebApp\AspNetWebApp.csproj", "{AB96AE37-D49C-4CC6-9445-0503DD5B67C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcApp", "AspNetMvcApp\AspNetMvcApp.csproj", "{B46F70AD-BA71-4B22-98FC-374E7F78CA0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AB96AE37-D49C-4CC6-9445-0503DD5B67C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB96AE37-D49C-4CC6-9445-0503DD5B67C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB96AE37-D49C-4CC6-9445-0503DD5B67C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46F70AD-BA71-4B22-98FC-374E7F78CA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46F70AD-BA71-4B22-98FC-374E7F78CA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46F70AD-BA71-4B22-98FC-374E7F78CA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46F70AD-BA71-4B22-98FC-374E7F78CA0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
