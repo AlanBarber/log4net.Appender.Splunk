@@ -1,0 +1,4 @@
+docs/* linguist-documentation
+src/AspNetMvcApp/* linguist-detectable=false
+src/AspNetWebApp/* linguist-detectable=false
+src/ConsoleTestApp/* linguist-detectable=false
