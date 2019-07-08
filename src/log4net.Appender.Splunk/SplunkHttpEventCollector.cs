@@ -17,10 +17,10 @@ namespace log4net.Appender.Splunk
         public string Token { get; set; }
         public string Index { get; set; }
         public string Host { get; set; }
-        public int RetriesOnError { get; set; } = 0;
+        public int RetriesOnError { get; set; }
         public int BatchIntevalMs { get; set; }
         public int BatchSizeCount { get; set; }
-        HttpEventCollectorSender.SendMode SendMode { get; set; }
+        HttpEventCollectorSender.SendMode SendMode { get; set; } = HttpEventCollectorSender.SendMode.Sequential;
         public bool IgnoreCertificateErrors { get; set; }
 
         /// <summary>
