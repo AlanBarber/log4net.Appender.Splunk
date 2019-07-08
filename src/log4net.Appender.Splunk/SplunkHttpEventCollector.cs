@@ -2,6 +2,8 @@
 using Splunk.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace log4net.Appender.Splunk
 {
@@ -16,6 +18,9 @@ namespace log4net.Appender.Splunk
         public string Index { get; set; }
         public string Host { get; set; }
         public int RetriesOnError { get; set; } = 0;
+        public int BatchIntevalMs { get; set; }
+        public int BatchSizeCount { get; set; }
+        HttpEventCollectorSender.SendMode SendMode { get; set; }
 
         /// <summary>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -31,10 +36,10 @@ namespace log4net.Appender.Splunk
                 new Uri(ServerUrl),                                                                 // Splunk HEC URL
                 Token,                                                                              // Splunk HEC token *GUID*
                 new HttpEventCollectorEventInfo.Metadata(Index, null, "_json", GetMachineName()),   // Metadata
-                HttpEventCollectorSender.SendMode.Sequential,                                       // Sequential sending to keep message in order
-                0,                                                                                  // BatchInterval - Set to 0 to disable
+                SendMode,                                      
+                BatchIntevalMs,                                                                     // BatchInterval - Set to 0 to disable
                 0,                                                                                  // BatchSizeBytes - Set to 0 to disable
-                0,                                                                                  // BatchSizeCount - Set to 0 to disable
+                BatchSizeCount,                                                                     // BatchSizeCount - Set to 0 to disable
                 new HttpEventCollectorResendMiddleware(RetriesOnError).Plugin                       // Resend Middleware with retry
             );
         }
@@ -77,8 +82,9 @@ namespace log4net.Appender.Splunk
             }
 
             // Send the event to splunk
-            _hecSender.Send(null, loggingEvent.Level.Name, null, loggingEvent.RenderedMessage, loggingEvent.ExceptionObject, properties, metaData);
-            _hecSender.FlushSync();
+            _hecSender.Send(DateTime.Now, null, loggingEvent.Level.Name, null, loggingEvent.RenderedMessage, loggingEvent.ExceptionObject, properties, metaData);
+            // the awaiter will lock the code execution and break batch processing
+            //_hecSender.FlushSync();
         }
 
         /// <summary>
@@ -93,6 +99,14 @@ namespace log4net.Appender.Splunk
             }
             
             return !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("COMPUTERNAME")) ? System.Environment.GetEnvironmentVariable("COMPUTERNAME") : System.Net.Dns.GetHostName();
+        }
+
+        public override bool Flush(int millisecondsTimeout)
+        {
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromMilliseconds(millisecondsTimeout));           
+            Task.Run(async () => await _hecSender.FlushAsync(), cancellationTokenSource.Token)
+                .Wait();
+            return true;
         }
     }
 }
