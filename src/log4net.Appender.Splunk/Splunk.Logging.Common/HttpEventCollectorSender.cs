@@ -354,17 +354,11 @@ namespace Splunk.Logging
             // post events only after the current post task is done
             if (this.activePostTask == null)
             {
-                this.activePostTask = Task.Factory.StartNew(() =>
-                {
-                    FlushInternalSingleBatch(events, serializedEvents).Wait();
-                });
+                this.activePostTask = Task.Run(async () => await FlushInternalSingleBatch(events, serializedEvents));
             }
             else
             {
-                this.activePostTask = this.activePostTask.ContinueWith((_) =>
-                {
-                    FlushInternalSingleBatch(events, serializedEvents).Wait();
-                });
+                this.activePostTask = this.activePostTask.ContinueWith(async (_) => await FlushInternalSingleBatch(events, serializedEvents));
             }
         }
 
@@ -374,11 +368,8 @@ namespace Splunk.Logging
         {
             // post data and update tasks counter
             Interlocked.Increment(ref activeAsyncTasksCount);
-            Task<HttpStatusCode> task = PostEvents(events, serializedEvents);
-            task.ContinueWith((_) =>
-            {
-                Interlocked.Decrement(ref activeAsyncTasksCount);            
-            });
+            Task<HttpStatusCode> task = Task.Run(async () => await PostEvents(events, serializedEvents));
+            task.ContinueWith((_) => Interlocked.Decrement(ref activeAsyncTasksCount));
             return task;
         }
 
