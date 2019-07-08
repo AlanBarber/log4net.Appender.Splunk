@@ -21,6 +21,7 @@ namespace log4net.Appender.Splunk
         public int BatchIntevalMs { get; set; }
         public int BatchSizeCount { get; set; }
         HttpEventCollectorSender.SendMode SendMode { get; set; }
+        public bool IgnoreCertificateErrors { get; set; }
 
         /// <summary>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -40,7 +41,9 @@ namespace log4net.Appender.Splunk
                 BatchIntevalMs,                                                                     // BatchInterval - Set to 0 to disable
                 0,                                                                                  // BatchSizeBytes - Set to 0 to disable
                 BatchSizeCount,                                                                     // BatchSizeCount - Set to 0 to disable
-                new HttpEventCollectorResendMiddleware(RetriesOnError).Plugin                       // Resend Middleware with retry
+                new HttpEventCollectorResendMiddleware(RetriesOnError).Plugin,                      // Resend Middleware with retry
+                null,
+                IgnoreCertificateErrors                                                             // Ignore invalid server certificate (self-signed, etc)
             );
         }
 
