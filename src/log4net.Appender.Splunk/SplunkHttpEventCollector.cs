@@ -85,7 +85,7 @@ namespace log4net.Appender.Splunk
             }
 
             // Send the event to splunk
-            _hecSender.Send(DateTime.Now, null, loggingEvent.Level.Name, null, loggingEvent.RenderedMessage, loggingEvent.ExceptionObject, properties, metaData);
+            _hecSender.Send(loggingEvent.TimeStampUtc, null, loggingEvent.Level.Name, null, loggingEvent.RenderedMessage, loggingEvent.ExceptionObject, properties, metaData);
             // the sync waiting will lock the code execution and break batch processing
             //_hecSender.FlushSync();
         }
