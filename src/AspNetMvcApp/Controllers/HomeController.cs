@@ -10,9 +10,14 @@ namespace AspNetMvcApp.Controllers
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(HomeController));
 
+
         public ActionResult Index()
         {
-            log.Info("Action Index has been fired.");
+            // with batch setting of 10, it should submit 3 batches which we can observe in Fiddler
+            for (var i = 0; i < 22; i++)
+            {
+                log.Info($"Action Index has been fired.i={i}, time=" + DateTime.Now.ToString("hh:mm:ss.fff tt"));
+            }
             return View();
         }
 
