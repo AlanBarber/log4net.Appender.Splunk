@@ -123,6 +123,7 @@ namespace Splunk.Logging
         private HttpEventCollectorFormatter formatter = null;
         // counter for bookkeeping the async tasks 
         private long activeAsyncTasksCount = 0;
+        private bool ignoreCertificateErrors;
 
         /// <summary>
         /// On error callbacks.
@@ -148,7 +149,8 @@ namespace Splunk.Logging
             SendMode sendMode,
             int batchInterval, int batchSizeBytes, int batchSizeCount,
             HttpEventCollectorMiddleware middleware,
-            HttpEventCollectorFormatter formatter = null)
+            HttpEventCollectorFormatter formatter = null,
+            bool ignoreCertificateErrors = false)
         {
             this.serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
@@ -163,6 +165,7 @@ namespace Splunk.Logging
             this.token = token;
             this.middleware = middleware;
             this.formatter = formatter;
+            this.ignoreCertificateErrors = ignoreCertificateErrors;
 
             // special case - if batch interval is specified without size and count
             // they are set to "infinity", i.e., batch may have any size 
@@ -189,7 +192,16 @@ namespace Splunk.Logging
             }
 
             // setup HTTP client
-            httpClient = new HttpClient();
+            if (ignoreCertificateErrors)
+            {
+                var certificateHandler = new HttpClientHandler();
+                certificateHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                certificateHandler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true;
+                httpClient = new HttpClient(certificateHandler, true);
+            }
+            else
+                httpClient = new HttpClient();
+
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(AuthorizationHeaderScheme, token);
         }
@@ -354,17 +366,11 @@ namespace Splunk.Logging
             // post events only after the current post task is done
             if (this.activePostTask == null)
             {
-                this.activePostTask = Task.Factory.StartNew(() =>
-                {
-                    FlushInternalSingleBatch(events, serializedEvents).Wait();
-                });
+                this.activePostTask = Task.Run(async () => await FlushInternalSingleBatch(events, serializedEvents));
             }
             else
             {
-                this.activePostTask = this.activePostTask.ContinueWith((_) =>
-                {
-                    FlushInternalSingleBatch(events, serializedEvents).Wait();
-                });
+                this.activePostTask = this.activePostTask.ContinueWith(async (_) => await FlushInternalSingleBatch(events, serializedEvents));
             }
         }
 
@@ -374,11 +380,8 @@ namespace Splunk.Logging
         {
             // post data and update tasks counter
             Interlocked.Increment(ref activeAsyncTasksCount);
-            Task<HttpStatusCode> task = PostEvents(events, serializedEvents);
-            task.ContinueWith((_) =>
-            {
-                Interlocked.Decrement(ref activeAsyncTasksCount);            
-            });
+            Task<HttpStatusCode> task = Task.Run(async () => await PostEvents(events, serializedEvents));
+            task.ContinueWith((_) => Interlocked.Decrement(ref activeAsyncTasksCount));
             return task;
         }
 

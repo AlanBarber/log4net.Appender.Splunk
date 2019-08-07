@@ -48,6 +48,13 @@ namespace ConsoleTestApp
                 logger.Error("Our pretend exception detected!", ex);
             }
 
+            // with batch setting of 10, it should submit 3 batches which we can observe in Fiddler
+            // the total number of messages should be 21...29. We sent 6 above, so need at least another 15
+            for (var i = 0; i < 15; i++)
+            {
+                logger.Info($"Test info message. i={i}, time=" + DateTime.Now.ToString("hh:mm:ss.fff tt"));
+            }
+
 #if DEBUG
             Console.Write("\nPress any key to continue...");
             Console.ReadKey();
