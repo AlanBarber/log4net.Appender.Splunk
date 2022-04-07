@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @copyright
  *
  * Copyright 2013-2015 Splunk, Inc.
@@ -26,6 +26,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Authentication;
 
 namespace Splunk.Logging
 {
@@ -100,7 +101,7 @@ namespace Splunk.Logging
         };
 
         private const string HttpContentTypeMedia = "application/json";
-        private const string HttpEventCollectorPath = "/services/collector/event/1.0";
+        private const string HttpEventCollectorPath = "/services/collector";
         private const string AuthorizationHeaderScheme = "Splunk";
         private Uri httpEventCollectorEndpointUri; // HTTP event collector endpoint full uri
         private HttpEventCollectorEventInfo.Metadata metadata; // logger metadata
@@ -194,13 +195,22 @@ namespace Splunk.Logging
             // setup HTTP client
             if (ignoreCertificateErrors)
             {
-                var certificateHandler = new HttpClientHandler();
-                certificateHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                certificateHandler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true;
+                var certificateHandler = new HttpClientHandler
+                {
+                    ClientCertificateOptions = ClientCertificateOption.Manual,
+                    ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true,
+                    SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11
+                };
                 httpClient = new HttpClient(certificateHandler, true);
             }
             else
-                httpClient = new HttpClient();
+            {
+                var handler = new HttpClientHandler
+                {
+                    SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11
+                };
+                httpClient = new HttpClient(handler, true);
+            }
 
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(AuthorizationHeaderScheme, token);
