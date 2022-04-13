@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <Version>2.1.0</Version>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
+    <Version>2.2.0</Version>
     <Authors>Alan Barber</Authors>
     <PackageLicenseUrl>https://github.com/AlanBarber/log4net.Appender.Splunk/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/AlanBarber/log4net.Appender.Splunk</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/AlanBarber/log4net.Appender.Splunk/master/docs/nugeticon.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/AlanBarber/log4net.Appender.Splunk</RepositoryUrl>
-    <Copyright>Copyright (c) 2018 Alan Barber, Copyright 2013-2015 Splunk, Inc.</Copyright>
+    <Copyright>Copyright (c) 2022 Alan Barber, Copyright 2013-2015 Splunk, Inc.</Copyright>
     <PackageTags>log4net log4net-appender splunk splunk-enterprise logging</PackageTags>
     <Description>A log4net appender for Splunk Http Event Collector (HEC) Sender
 
@@ -18,12 +18,15 @@ Note(s):
  - Setup Note: Will fail to log if using https without a valid SSL cert.
  - This package uses the log4net.Appender namespace but is NOT an official log4net project package.
  - Includes modifed code from Splunk.Logging.Common to work with .Net Standard / .Net Core.</Description>
-    <PackageReleaseNotes>Version 2.1.0
-- Add optional index and host to the event collector (PR by @sixlettervariables)
-Version 2.0.0
-- Updated to .NET Standard 2.0
-Version 1.0.0
- - First publish to NuGet</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      Version 2.2.0
+      - Fix for TLS connection errors (PR by @janvesely-nable)
+      Version 2.1.0
+      - Add optional index and host to the event collector (PR by @sixlettervariables)
+      Version 2.0.0
+      - Updated to .NET Standard 2.0
+      Version 1.0.0
+      - First publish to NuGet</PackageReleaseNotes>
     <Company />
   </PropertyGroup>
 
