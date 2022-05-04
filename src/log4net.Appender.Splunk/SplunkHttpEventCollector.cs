@@ -17,6 +17,7 @@ namespace log4net.Appender.Splunk
         public string Token { get; set; }
         public string Index { get; set; }
         public string Host { get; set; }
+        public string Source { get; set; }
         public int RetriesOnError { get; set; }
         public int BatchIntevalMs { get; set; }
         public int BatchSizeCount { get; set; }
@@ -36,7 +37,7 @@ namespace log4net.Appender.Splunk
             _hecSender = new HttpEventCollectorSender(
                 new Uri(ServerUrl),                                                                 // Splunk HEC URL
                 Token,                                                                              // Splunk HEC token *GUID*
-                new HttpEventCollectorEventInfo.Metadata(Index, null, "_json", GetMachineName()),   // Metadata
+                new HttpEventCollectorEventInfo.Metadata(Index, Source, "_json", GetMachineName()), // Metadata
                 SendMode,                                      
                 BatchIntevalMs,                                                                     // BatchInterval - Set to 0 to disable
                 0,                                                                                  // BatchSizeBytes - Set to 0 to disable
@@ -66,13 +67,13 @@ namespace log4net.Appender.Splunk
             }
 
             // Build metaData
-            var metaData = new HttpEventCollectorEventInfo.Metadata(Index, loggingEvent.LoggerName, "_json", GetMachineName());
+            var metaData = new HttpEventCollectorEventInfo.Metadata(Index, Source ?? loggingEvent.LoggerName, "_json", GetMachineName());
 
             // Build properties object and assign standard values
             var properties = new Dictionary<String, object>
             {
-                {"Source", loggingEvent.LoggerName},
-                { "Host", GetMachineName()}
+                { "Source", Source ?? loggingEvent.LoggerName },
+                { "Host", GetMachineName() }
             };
 
             // Get properties from event
